@@ -10,61 +10,45 @@
 
 <body>
     <script>
-
-        var closure = (function () {
+        var myClass = (function () {
             return function () {
-                //闭包的作用
-                //1.累加器
-                var add = (function () {
-                    var num = 0;
-                    return function () {
-                        console.log(++num);
-                    }
-                }())
-                add();
-                add();
-
-                //2.变量私有化
-                function Base() {
-                    this.name = "XM";
-                    var age = 28;
-                    this.getAge = function () {
-                        console.log("My age is " + age);
+                function Base(last_name) {
+                    this.last_name = last_name;
+                    if (typeof this.sayLastName != "function") {
+                        Base.prototype.sayLastName = function () {
+                            console.log("My lastName is " + this.last_name);
+                        }
                     }
                 }
-                var base = new Base();
-                console.log(base.name); //"XM";
-                console.log(base.age);  //undefine
-                base.getAge();          //"My age is 28"
-            }
-        }())
-        closure();
-        var myArr = (function () {
-            return function () {
-                //数组操作
-                var arr = [1, 1, 3, 3];
-                //数组"增"
-                arr.push(4, 4);
-                arr.unshift(0, 0);    //[0, 0, 1, 1, 3, 3, 4, 4]
-                arr.splice(4, 0, 2, 2); //[0, 0, 1, 1, 2, 2, 3, 3, 4, 4]
+                var base = new Base("he");
+                base.sayLastName();
 
-                //数组"删"
-                arr.pop();
-                arr.pop();           //[0, 0, 1, 1, 2, 2, 3, 3]
-                arr.shift();
-                arr.shift();         //[1, 1, 2, 2, 3, 3]
-                arr.splice(2, 2);     //[1, 1, 3, 3]
+                function Dev(last_name, first_name) {
+                    Base.call(this, last_name);
+                    this.first_name = first_name;
+                    if (typeof this.sayFirstName != "function") {
+                        Dev.prototype.sayFirstName = function () {
+                            console.log("My firstName is " + this.first_name);
+                        }
+                    }
+                }
 
-                //数组“改”
-                arr.splice(0, 2, 2, 2); //[2,2,3,3]
+                var inherit = (function () {
+                    function Fun() { };
+                    return function (Target, Origin) {
+                        Fun.prototype = Origin.prototype;
+                        Target.prototype = new Fun();
+                        Target.prototype.constructor = Target;
+                    }
+                }())
+                inherit(Dev, Base);
 
-                //数组"查"
-                console.log(arr.slice(1, 3));  //[2, 3]
+                var dev = new Dev("he", "xiaohong");
+                dev.sayFirstName();
+                dev.sayLastName();
             }
         }());
-        myArr();
-        
-
+        myClass();
     </script>
 </body>
 
