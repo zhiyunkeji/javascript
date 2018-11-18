@@ -8,7 +8,30 @@
 </head>
 <body>
     <script>
-        //javascript学习
+        //闭包的作用
+        //1.累加器
+        var add = (function(){
+            var num = 0;
+            return function(){
+                console.log(++num);
+            }
+        }())
+        add();
+        add();
+
+        //2.变量私有化
+        function Base(){
+            this.name = "XM";
+            var age = 28;
+            this.getAge = function(){
+                console.log("My age is " + age);
+            }
+        }
+        var base = new Base();
+        console.log(base.name); //"XM";
+        console.log(base.age);  //undefine
+        base.getAge();          //"My age is 28"
+
     </script>
 </body>
 </html>
