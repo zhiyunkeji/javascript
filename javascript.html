@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>javascript学习</title>
 </head>
+
 <body>
     <script>
-        //闭包的作用
-        //1.累加器
-        var add = (function(){
-            var num = 0;
-            return function(){
-                console.log(++num);
+
+        var closure = (function () {
+            return function () {
+                //闭包的作用
+                //1.累加器
+                var add = (function () {
+                    var num = 0;
+                    return function () {
+                        console.log(++num);
+                    }
+                }())
+                add();
+                add();
+
+                //2.变量私有化
+                function Base() {
+                    this.name = "XM";
+                    var age = 28;
+                    this.getAge = function () {
+                        console.log("My age is " + age);
+                    }
+                }
+                var base = new Base();
+                console.log(base.name); //"XM";
+                console.log(base.age);  //undefine
+                base.getAge();          //"My age is 28"
             }
         }())
-        add();
-        add();
-
-        //2.变量私有化
-        function Base(){
-            this.name = "XM";
-            var age = 28;
-            this.getAge = function(){
-                console.log("My age is " + age);
-            }
-        }
-        var base = new Base();
-        console.log(base.name); //"XM";
-        console.log(base.age);  //undefine
-        base.getAge();          //"My age is 28"
+        closure();
 
     </script>
 </body>
+
 </html>
